@@ -1,26 +1,33 @@
 import pygame
-import math
 
 class Player(pygame.sprite.Sprite):
+    #pygame.sprite variables
+    image: pygame.surface
+    rect:pygame.rect
 
-    player_pos: pygame.Vector2
     screen: pygame.surface
-    invulnerable = False
-    invulnerable_time = 3
-    timer = 0
-    blank_img = pygame.surface
-    ship_image = pygame.surface
-    flip_image = True
-    flip_timer = 0
-    flip_speed = 1/4
+    position: pygame.Vector2
+    ship_image: pygame.surface
+    blank_img: pygame.surface
+    mask: pygame.mask
+
+    invulnerable: bool
+    invulnerable_time: int
+    invulnerable_timer:float
+    
+    blink_image: bool
+    blink_timer: int
+    blink_speed: float
+
+    lives:int
 
     def __init__(self, screen:pygame.surface):
         super().__init__()
         self.screen = screen
-        self.player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+        self.position = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+        self.ship_image = pygame.image.load("ship.png").convert_alpha()
+        self.blank_img = pygame.image.load("blank.png")        
 
-        self.ship_image = pygame.image.load("ship.png")
-        self.blank_img = pygame.image.load("blank.png")
         imgSize = (100,50)
         self.image = pygame.transform.scale(self.ship_image, imgSize)
         self.ship_image = self.image.copy()
@@ -29,8 +36,17 @@ class Player(pygame.sprite.Sprite):
         ship_left = screen.get_width()/2 - self.image.get_width()
         ship_top = screen.get_height()/2 - self.image.get_height()
         self.rect = self.image.get_rect(top=ship_top, left=ship_left)
-        self.timer = 0
 
+        self.invulnerable = False
+        self.invulnerable_time = 3
+        self.invulnerable_timer = 0
+
+        self.blink_image = False
+        self.blink_timer = 0
+        self.blink_speed = 1/8
+
+        self.lives=3
+    
     def move_ship(self, dt):
         #if dt isn't an int or float, error
         if(not (isinstance(dt, int) or isinstance(dt, float))):
@@ -50,30 +66,29 @@ class Player(pygame.sprite.Sprite):
         #return self.rect
 
     def check_invulnerable(self, dt):
-        if(not self.invulnerable):
-            return
-        
-        self.timer += dt
-        self.flip_timer += dt
+        self.invulnerable_timer += dt
+        self.blink_timer += dt
 
-        if( self.timer >= self.invulnerable_time):
-            self.timer = 0
+        if( self.invulnerable_timer >= self.invulnerable_time):
+            self.invulnerable_timer = 0
             self.invulnerable = False
             self.image = self.ship_image
         else:
-            if(self.flip_timer >= self.flip_speed):
-                print(self.flip_timer)
+            if(self.blink_timer >= self.blink_speed):
                 self.flip_img()
-                self.flip_timer = 0
+                self.blink_timer = 0
 
     def flip_img(self):
-        self.flip_image = not self.flip_image
-        if(self.flip_image):
-            print("blank")
+        self.blink_image = not self.blink_image
+        if(self.blink_image):
             self.image = self.blank_img
         else:
             self.image = self.ship_image
-            print("ship")
         
 
-    
+    def hit(self):
+        if(self.lives == 0):
+            return True
+        self.invulnerable = True
+        self.lives -=1
+        

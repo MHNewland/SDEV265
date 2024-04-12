@@ -1,7 +1,8 @@
 import pygame
 import Player
 import Meteor
-import array
+import ScoreManager
+import Background
 
 # pygame setup
 pygame.init()
@@ -11,19 +12,20 @@ clock = pygame.time.Clock()
 running = True
 dt = 0
 
-score = 0
+background_array = pygame.sprite.Group()
+background_near = Background.Background(screen, "background_near.png", 300, True)
+background_med = Background.Background(screen, "background_med.png", 200, True)
+background_far = Background.Background(screen, "background_far.png", 100, True)
+background_array.add([background_near, background_med, background_far])
+score_manager = ScoreManager.ScoreManager(screen)
 
 meteor_spawn_delay = 2
 meteor_timer = 0
+meteor_array = pygame.sprite.Group()
 
-meteor_array = pygame.sprite.Group(Meteor.Meteor(screen))
-
-player_sprite = pygame.sprite.GroupSingle(Player.Player(screen))
+player_sprite = pygame.sprite.GroupSingle()
 ship = Player.Player(screen)
 player_sprite.add(ship)
-
-score_font = pygame.font.Font(size= 30)
-
 
 while running:
     meteor_timer+=dt
@@ -33,7 +35,7 @@ while running:
 
     for m in meteor_array:
         if(m.move_meteor(dt)):
-            score +=1
+            score_manager.current_score +=1
     
     # poll for events
     # pygame.QUIT event means the user clicked X to close your window
@@ -42,23 +44,27 @@ while running:
             running = False
 
     # fill the screen with a color to wipe away anything from last frame
-    screen.fill("light blue")
+    screen.fill("black")
+    for b in background_array.sprites():
+        if(b.move_background(dt)):
+            background_array.add(Background.Background(screen, b.img_str, b.speed))
+    background_array.draw(screen)
     player_sprite.sprite.move_ship(dt)
-
-    score_text = score_font.render( f"Score: {score}",False, (0,0,0))
-    score_posX = screen.get_bounding_rect().right - score_text.get_width() - 20
 
     meteor_array.draw(screen)
     player_sprite.draw(screen)
-    screen.blit(score_text, (score_posX,20))
+    score_text, score_pos = score_manager.draw()
+    screen.blit(score_text, score_pos)
 
 
     for m in meteor_array.sprites():
-        player_sprite.sprite.check_invulnerable(dt)
-        if pygame.sprite.spritecollide(m, player_sprite, False, pygame.sprite.collide_mask):
-            if(not (player_sprite.sprite.invulnerable)):
-                print("hit")
-                player_sprite.sprite.invulnerable = True
+        if(not player_sprite.sprite.invulnerable):
+            if pygame.sprite.spritecollide(m, player_sprite, False, pygame.sprite.collide_mask):
+                if(player_sprite.sprite.hit()):
+                    running = False
+        else:    
+            player_sprite.sprite.check_invulnerable(dt)
+        
 
                 
     
@@ -67,9 +73,11 @@ while running:
     # flip() the display to put your work on screen
     pygame.display.flip()
 
-    # limits FPS to 60
+    # limits FPS to 30
     # dt is delta time in seconds since last frame, used for framerate-
     # independent physics.
-    dt = clock.tick(60) / 1000
+    dt = clock.tick(30) / 1000
+
+pygame.time.wait(1000)
 
 pygame.quit()

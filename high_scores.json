@@ -1,0 +1,15 @@
+{
+    "highscores":
+        [
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":10000},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":100000},
+            {"initials":"AAA", "score":100},
+            {"initials":"AAA", "score":1000}      
+        ]
+  }
