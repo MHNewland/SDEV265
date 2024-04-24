@@ -5,7 +5,7 @@ class ScoreManager():
 
     #json_format
     #{
-    #   "scores"[
+    #   "highscores"[
     #       {"initials": "score"},
     #       {"initials": "score"}
     #   ]
@@ -25,7 +25,8 @@ class ScoreManager():
         self.high_scores = list()
         self.score_text = self.score_font.render( f"Score: {self.current_score}",False, (255,255,255))
         self.score_pos = (self.screen.get_bounding_rect().right - self.score_text.get_width() - 20, 20)
-        
+
+    def load_scores(self):
         with open("high_scores.json") as hs:
             scores = json.load(hs)
             #print(f"{score['initials']}:\t{score['score']}")
@@ -37,3 +38,9 @@ class ScoreManager():
         self.score_text = self.score_font.render( f"Score: {self.current_score}",False, (255,255,255))
         self.score_pos = (self.screen.get_bounding_rect().right - self.score_text.get_width() - 20, 20)
         return self.score_text, self.score_pos
+
+    def save_scores(self):
+        highscores = {}
+        highscores["highscores"]= self.high_scores
+        with open("high_scores.json", "w") as hs:
+            json.dump(highscores, hs)

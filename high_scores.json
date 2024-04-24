@@ -1,15 +1,13 @@
-{
-    "highscores":
-        [
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":10000},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":100000},
-            {"initials":"AAA", "score":100},
-            {"initials":"AAA", "score":1000}      
-        ]
-  }
+{"highscores": [
+    {"initials": "AAA", "score": 1}, 
+    {"initials": "AAA", "score": 2}, 
+    {"initials": "AAA", "score": 3}, 
+    {"initials": "AAA", "score": 4}, 
+    {"initials": "AAA", "score": 5}, 
+    {"initials": "AAA", "score": 6}, 
+    {"initials": "AAA", "score": 7}, 
+    {"initials": "AAA", "score": 8}, 
+    {"initials": "AAA", "score": 9}, 
+    {"initials": "AAA", "score": 10}
+    ]
+}

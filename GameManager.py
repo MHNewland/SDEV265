@@ -3,12 +3,12 @@ import Player
 import Meteor
 import ScoreManager
 import Background
-import pygame_menu
 
-def StartGame(mainMenu):
-    # pygame setup
-    #pygame.init()
-    #pygame.font.init()
+def StartGame():#return_menu):
+    """
+    Starts the main game loop.
+    return_menu is the screen it'll go to once the game is over.
+    """
     screen = pygame.display.set_mode((1280, 720))
     clock = pygame.time.Clock()
     running = True
@@ -53,11 +53,12 @@ def StartGame(mainMenu):
         background_array.draw(screen)
         player_sprite.sprite.move_ship(dt)
 
-        meteor_array.draw(screen)
         player_sprite.draw(screen)
+        meteor_array.draw(screen)
         score_text, score_pos = score_manager.draw()
         screen.blit(score_text, score_pos)
 
+        player_sprite.update(dt)
 
         for m in meteor_array.sprites():
             if(not player_sprite.sprite.invulnerable):
@@ -79,7 +80,6 @@ def StartGame(mainMenu):
         # dt is delta time in seconds since last frame, used for framerate-
         # independent physics.
         dt = clock.tick(30) / 1000
-
-    return mainMenu
+    return score_manager.current_score
     
     
