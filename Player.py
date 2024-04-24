@@ -45,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         self.blink_timer = 0
         self.blink_speed = 1/8
 
-        self.lives=3
+        self.lives=0
     
     def move_ship(self, dt):
         #if dt isn't an int or float, error
