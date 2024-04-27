@@ -37,19 +37,23 @@ class Player(pygame.sprite.Sprite):
         #load all ship animation images
         self.index = 0
         self.ship_images = []
-        self.ship_images.append(pygame.transform.scale(pygame.image.load("ship1.png"), imgSize))
-        self.ship_images.append(pygame.transform.scale(pygame.image.load("ship2.png"), imgSize))
-        self.ship_images.append(pygame.transform.scale(pygame.image.load("ship3.png"), imgSize))
+        self.ship_images.append(pygame.transform.scale(pygame.image.load("Images/ship1.png"), imgSize))
+        self.ship_images.append(pygame.transform.scale(pygame.image.load("Images/ship2.png"), imgSize))
+        self.ship_images.append(pygame.transform.scale(pygame.image.load("Images/ship3.png"), imgSize))
         self.ship_anim_speed = 10
         self.ship_anim_timer = 0
 
         #load blank image for flashing ship and the ship alpha for collision.
-        self.blank_img = pygame.image.load("blank.png")
-        self.ship_alpha = pygame.image.load("ShipAlpha.png")        
+        self.blank_img = pygame.image.load("Images/blank.png")
+        self.ship_alpha = pygame.image.load("Images/ShipAlpha.png")        
 
         #set all images to the correct size.
         self.ship_alpha = pygame.transform.scale(self.ship_alpha, imgSize)
-    
+
+        #life image
+        self.life_image = pygame.transform.scale(pygame.image.load("Images/life heart.png"), (15, 15))
+        
+
         #set start image
         self.image = self.ship_images[0]
 
@@ -69,11 +73,10 @@ class Player(pygame.sprite.Sprite):
         self.blink_timer = 0
         self.blink_speed = 4
 
-        self.lives=0
-        self.speed = 600
-    
+        self.lives = 3
+        self.speed = 600    
 
-    def move_ship(self, dt):
+    def move_ship(self, dt, difficulty):
         """
         Moves the ship Up, Left, Down, or Right
         based on key presses of W, A, S, and D respectively,
@@ -83,16 +86,16 @@ class Player(pygame.sprite.Sprite):
         #if dt isn't an int or float, error
         if(not (isinstance(dt, int) or isinstance(dt, float))):
             return
-        
+
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            self.rect.move_ip(0,-self.speed*dt)
+            self.rect.move_ip(0,-(self.speed+difficulty)*dt)
         if keys[pygame.K_s]:
-            self.rect.move_ip(0,self.speed*dt)
+            self.rect.move_ip(0,(self.speed+difficulty)*dt)
         if keys[pygame.K_a]:
-            self.rect.move_ip(-self.speed*dt,0)
+            self.rect.move_ip(-(self.speed+difficulty)*dt,0)
         if keys[pygame.K_d]:
-            self.rect.move_ip(self.speed*dt,0)
+            self.rect.move_ip((self.speed+difficulty)*dt,0)
 
         self.rect.clamp_ip(self.screen.get_bounding_rect())
 
