@@ -1,4 +1,5 @@
 import pygame
+import AudioManager
 
 class Player(pygame.sprite.Sprite):
     #pygame.sprite variables
@@ -74,7 +75,11 @@ class Player(pygame.sprite.Sprite):
         self.blink_speed = 4
 
         self.lives = 3
-        self.speed = 600    
+        self.speed = 600
+
+        # Load and play ship sound effect
+        ship_sound = pygame.mixer.Sound("ship.mp3")  
+        ship_sound.play()  
 
     def move_ship(self, dt, difficulty):
         """
@@ -137,7 +142,13 @@ class Player(pygame.sprite.Sprite):
         otherwise, it sets invulnerable to true and subtracts
         one from lives
         """
+        # Load collision sound effect and play when player hits meteor
+        collision = pygame.mixer.Sound("collision.ogg")
+        collision.play()
         if(self.lives == 0):
+            # Prevent the collision sound from playing on the game over screen
+            collision.stop()
+            pygame.mixer.stop
             return True
         self.invulnerable = True
         self.lives -=1
