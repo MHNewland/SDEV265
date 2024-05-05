@@ -1,5 +1,4 @@
 import pygame
-import AudioManager
 
 class Player(pygame.sprite.Sprite):
     #pygame.sprite variables
@@ -146,9 +145,8 @@ class Player(pygame.sprite.Sprite):
         collision = pygame.mixer.Sound("collision.ogg")
         collision.play()
         if(self.lives == 0):
-            # Prevent the collision sound from playing on the game over screen
-            collision.stop()
-            pygame.mixer.stop
+            # Prevent the collision and ship sounds from playing on the game over screen
+            pygame.mixer.pause()
             return True
         self.invulnerable = True
         self.lives -=1
