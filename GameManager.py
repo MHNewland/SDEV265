@@ -58,6 +58,7 @@ def StartGame():#return_menu):
         # pygame.QUIT event means the user clicked X to close your window
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                pygame.mixer.pause()           # Stop all sounds if player clicked the X close button 
                 running = False
 
         # fill the screen with a color to wipe away anything from last frame
