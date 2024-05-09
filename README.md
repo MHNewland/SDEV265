@@ -41,7 +41,7 @@ How to Play:
 Team Credits:
 Enoch E Jacobs - Team Lead, Documentation, Ship Art
 Joey D Thacker - Team Float, Documentation
-Matthew Hunter Newland - Main Programmer
+Matthew Hunter Newland - Main Programmer, Background Art
 Ryan Mitchell Cannon - Documentation, Sound Programmer
 Samuel J Richardson - Tester, Sound Programmer
 
