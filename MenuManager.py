@@ -16,7 +16,8 @@ pygame.init()
 surface = pygame.display.set_mode((1280, 720))
 current_score = 0
 scores = sm.ScoreManager(surface)
- 
+scores.load_scores()
+
 def start_the_game():
     """
     Starts the game and stores the score in current_score
